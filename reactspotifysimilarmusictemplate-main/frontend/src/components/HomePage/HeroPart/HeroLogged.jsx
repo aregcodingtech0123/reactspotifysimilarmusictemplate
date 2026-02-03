@@ -1,10 +1,23 @@
 import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { Play, Music, Headphones, Music2 } from 'lucide-react';
 
 const MusicHeroSection = () => {
+  const navigate = useNavigate();
+
+  // Navigate to All Songs page
+  const handleStartListening = () => {
+    navigate('/category/All');
+  };
+
+  // Navigate to Discover page
+  const handleExploreSongs = () => {
+    navigate('/discover');
+  };
+
   return (
     <div className="bg-gradient-to-br from-indigo-900 to-purple-900 text-white">
-      <div className="flex flex-col md:flex-row items-center justify-between max-w-6xl mx-auto px-4 py-12"> {/* py-16 yerine py-12 */}
+      <div className="flex flex-col md:flex-row items-center justify-between max-w-6xl mx-auto px-4 py-12">
         {/* Left Side - Text Content */}
         <div className="w-full md:w-1/2 mb-12 md:mb-0">
           <h1 className="text-5xl font-bold mb-4">
@@ -16,13 +29,21 @@ const MusicHeroSection = () => {
             Unlimited music, personalized playlists, and the latest releases all in one place.
           </p>
           
-          {/* CTA Buttons */}
+          {/* CTA Buttons - Now with proper navigation */}
           <div className="flex flex-wrap gap-4">
-            <button className="bg-green-500 hover:bg-green-600 text-white font-medium py-3 px-6 rounded-full flex items-center transition">
+            <button 
+              onClick={handleStartListening}
+              data-testid="hero-start-listening-btn"
+              className="bg-green-500 hover:bg-green-600 text-white font-medium py-3 px-6 rounded-full flex items-center transition"
+            >
               <Play size={20} className="mr-2" />
               Start Listening
             </button>
-            <button className="bg-transparent hover:bg-white/10 border border-white text-white font-medium py-3 px-6 rounded-full transition">
+            <button 
+              onClick={handleExploreSongs}
+              data-testid="hero-explore-songs-btn"
+              className="bg-transparent hover:bg-white/10 border border-white text-white font-medium py-3 px-6 rounded-full transition"
+            >
               Explore Songs
             </button>
           </div>

@@ -1,6 +1,6 @@
 import React from 'react';
-import TrendingSongsAllComponent from '../../components/TrendingMusic/TrendingSongsAll';
+import TrendingSongsPage from '../../components/TrendingMusic/TrendingSongsPage';
 
 export function TrendingSongsAll() {
-  return <TrendingSongsAllComponent />;
+  return <TrendingSongsPage />;
 }

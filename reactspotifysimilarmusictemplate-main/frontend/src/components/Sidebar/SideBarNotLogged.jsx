@@ -1,41 +1,86 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { HomeIcon, TrendingUpIcon, CompassIcon, LogInIcon } from 'lucide-react';
+import { 
+  HomeIcon, 
+  TrendingUpIcon, 
+  CompassIcon, 
+  LogInIcon,
+  Guitar,
+  Music2,
+  Mic2
+} from 'lucide-react';
 
 const SidebarNotLogged = ({ isOpen }) => {
+  const mainNavItems = [
+    { to: '/', icon: HomeIcon, label: 'Home' },
+    { to: '/trendingsongsall', icon: TrendingUpIcon, label: 'Trends' },
+    { to: '/discover', icon: CompassIcon, label: 'Discover' },
+  ];
+
+  const genreNavItems = [
+    { to: '/category/rock', icon: Guitar, label: 'Rock', color: 'text-red-400' },
+    { to: '/category/pop', icon: Music2, label: 'Pop', color: 'text-pink-400' },
+    { to: '/category/jazz', icon: Music2, label: 'Jazz', color: 'text-blue-400' },
+    { to: '/category/rap', icon: Mic2, label: 'Rap', color: 'text-orange-400' },
+  ];
+
   return (
-    <div className="p-4">
-      {isOpen && <h2 className="text-xl font-bold mb-6 pl-2">Music App</h2>}
-      <nav className="space-y-4">
-        <Link
-          to="/"
-          className={`flex items-center gap-3 p-2 rounded hover:bg-gray-700 ${!isOpen && 'justify-center'}`}
-        >
-          <HomeIcon size={20} />
-          {isOpen && <span>Home</span>}
-        </Link>
-        <Link
-          to="/category/All"
-          className={`flex items-center gap-3 p-2 rounded hover:bg-gray-700 ${!isOpen && 'justify-center'}`}
-        >
-          <TrendingUpIcon size={20} />
-          {isOpen && <span>Trends</span>}
-        </Link>
-        <Link
-          to="/category/All"
-          className={`flex items-center gap-3 p-2 rounded hover:bg-gray-700 ${!isOpen && 'justify-center'}`}
-        >
-          <CompassIcon size={20} />
-          {isOpen && <span>Discover</span>}
-        </Link>
+    <div className="p-4 h-full flex flex-col">
+      {isOpen && (
+        <h2 className="text-xl font-bold mb-6 pl-2 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+          Music App
+        </h2>
+      )}
+      
+      {/* Main Navigation */}
+      <nav className="space-y-2">
+        {mainNavItems.map((item) => (
+          <Link
+            key={item.to}
+            to={item.to}
+            data-testid={`sidebar-${item.label.toLowerCase()}`}
+            className={`flex items-center gap-3 p-2.5 rounded-lg hover:bg-gray-700/50 transition-colors group ${!isOpen && 'justify-center'}`}
+          >
+            <item.icon size={20} className="text-gray-400 group-hover:text-purple-400 transition-colors" />
+            {isOpen && <span className="text-gray-300 group-hover:text-white transition-colors">{item.label}</span>}
+          </Link>
+        ))}
+      </nav>
+
+      {/* Divider */}
+      <div className="my-4 border-t border-gray-700/50" />
+
+      {/* Genre Navigation */}
+      {isOpen && (
+        <div className="mb-2 px-2">
+          <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Genres</span>
+        </div>
+      )}
+      <nav className="space-y-2">
+        {genreNavItems.map((item) => (
+          <Link
+            key={item.to}
+            to={item.to}
+            data-testid={`sidebar-${item.label.toLowerCase()}`}
+            className={`flex items-center gap-3 p-2.5 rounded-lg hover:bg-gray-700/50 transition-colors group ${!isOpen && 'justify-center'}`}
+          >
+            <item.icon size={20} className={`${item.color} group-hover:scale-110 transition-transform`} />
+            {isOpen && <span className="text-gray-300 group-hover:text-white transition-colors">{item.label}</span>}
+          </Link>
+        ))}
+      </nav>
+
+      {/* Login Button */}
+      <div className="mt-auto pt-4">
         <Link
           to="/login"
-          className={`flex items-center gap-3 p-2 mt-8 bg-blue-600 rounded hover:bg-blue-700 ${!isOpen && 'justify-center'}`}
+          data-testid="sidebar-login"
+          className={`flex items-center gap-3 p-2.5 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 rounded-lg transition-all ${!isOpen && 'justify-center'}`}
         >
-          <LogInIcon size={20} />
-          {isOpen && <span>Login</span>}
+          <LogInIcon size={20} className="text-white" />
+          {isOpen && <span className="text-white font-medium">Login</span>}
         </Link>
-      </nav>
+      </div>
     </div>
   );
 };

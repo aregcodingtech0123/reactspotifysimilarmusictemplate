@@ -1,9 +1,9 @@
 import React from 'react';
-import ProfileComponent from '../../components/Profile/Profile';
+import ProfilePage from '../../components/Profile/ProfilePage';
 
 /**
- * Private profile page. Content from forloggedusers Profile.
+ * Private profile page with full user info, playlists, favorites, and history.
  */
 export function Profile() {
-  return <ProfileComponent />;
+  return <ProfilePage />;
 }
