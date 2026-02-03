@@ -46,12 +46,13 @@ const router = createBrowserRouter([
       { path: '/about', element: <About /> },
       { path: '/trendingsongsall', element: <TrendingSongsAll /> },
       { path: '/discover', element: <Discover /> },
-      { path: '/category/:category', element: <Category /> },
-      // Genre-specific category pages
+      // Genre-specific category pages (must come before the generic route)
       { path: '/category/rock', element: <CategoryGenre /> },
       { path: '/category/pop', element: <CategoryGenre /> },
       { path: '/category/jazz', element: <CategoryGenre /> },
       { path: '/category/rap', element: <CategoryGenre /> },
+      // Generic category page (All and other categories)
+      { path: '/category/:category', element: <Category /> },
     ],
   },
 ]);
