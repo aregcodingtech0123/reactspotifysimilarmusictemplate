@@ -45,8 +45,8 @@ const PublicHeroSection = () => {
 
         <div className="flex flex-wrap gap-4 justify-center">
           <Link
-            to="/login"
-            data-testid="hero-login-btn"
+            to="/category/All"
+            data-testid="hero-start-listening-btn"
             className="flex items-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-semibold py-3 px-8 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg shadow-purple-500/30"
           >
             <Play size={20} />

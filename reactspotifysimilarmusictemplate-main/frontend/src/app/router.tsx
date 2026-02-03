@@ -2,6 +2,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { PublicLayout } from './layouts/PublicLayout';
 import { PrivateLayout } from './layouts/PrivateLayout';
 import { PublicHomeLayout } from './layouts/PublicHomeLayout';
+import { PublicSidebarLayout } from './layouts/PublicSidebarLayout';
 import { Login } from '../pages/public/Login';
 import { Register } from '../pages/public/Register';
 import { Home } from '../pages/private/Home';
@@ -18,7 +19,7 @@ import { CategoryGenre } from '../pages/private/CategoryGenre';
 import { PublicHome } from '../pages/public/PublicHome';
 
 const router = createBrowserRouter([
-  // Public home page for not logged-in users
+  // Public home page for not logged-in users (no sidebar)
   {
     element: <PublicHomeLayout />,
     children: [
@@ -33,7 +34,23 @@ const router = createBrowserRouter([
       { path: '/register', element: <Register /> },
     ],
   },
-  // Private routes for logged-in users
+  // Public pages with sidebar (accessible without login)
+  {
+    element: <PublicSidebarLayout />,
+    children: [
+      { path: '/discover', element: <Discover /> },
+      { path: '/trendingsongsall', element: <TrendingSongsAll /> },
+      { path: '/about', element: <About /> },
+      // Genre-specific category pages (public)
+      { path: '/category/rock', element: <CategoryGenre /> },
+      { path: '/category/pop', element: <CategoryGenre /> },
+      { path: '/category/jazz', element: <CategoryGenre /> },
+      { path: '/category/rap', element: <CategoryGenre /> },
+      // Generic category page (All and other categories)
+      { path: '/category/:category', element: <Category /> },
+    ],
+  },
+  // Private routes for logged-in users only
   {
     element: <PrivateLayout />,
     children: [
@@ -43,16 +60,6 @@ const router = createBrowserRouter([
       { path: '/playlist', element: <Playlist /> },
       { path: '/likedsongs', element: <LikedSongs /> },
       { path: '/history', element: <History /> },
-      { path: '/about', element: <About /> },
-      { path: '/trendingsongsall', element: <TrendingSongsAll /> },
-      { path: '/discover', element: <Discover /> },
-      // Genre-specific category pages (must come before the generic route)
-      { path: '/category/rock', element: <CategoryGenre /> },
-      { path: '/category/pop', element: <CategoryGenre /> },
-      { path: '/category/jazz', element: <CategoryGenre /> },
-      { path: '/category/rap', element: <CategoryGenre /> },
-      // Generic category page (All and other categories)
-      { path: '/category/:category', element: <Category /> },
     ],
   },
 ]);
