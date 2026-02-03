@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import SongItem from '../SongItem';
 import MusicPlayer from '../MusicPlayer';
 import { Guitar, Music2, Mic2, ChevronDown } from 'lucide-react';
@@ -45,9 +45,18 @@ const categoryConfig = {
 };
 
 const CategoryPage = () => {
-  const { category = 'rock' } = useParams();
+  const { category } = useParams();
+  const location = useLocation();
   const navigate = useNavigate();
-  const categoryKey = category.toLowerCase();
+  
+  // Extract category from URL path (works for both /category/:category and /category/rock style routes)
+  const getCategoryFromPath = () => {
+    const pathParts = location.pathname.split('/');
+    const lastPart = pathParts[pathParts.length - 1];
+    return lastPart.toLowerCase();
+  };
+  
+  const categoryKey = category ? category.toLowerCase() : getCategoryFromPath();
   const config = categoryConfig[categoryKey] || categoryConfig.rock;
   const Icon = config.icon;
 
@@ -99,8 +108,8 @@ const CategoryPage = () => {
               <Icon size={48} />
             </div>
             <div>
-              <h1 className="text-4xl md:text-5xl font-bold text-white">{config.title}</h1>
-              <p className={`text-lg ${config.accentColor} font-medium`}>{config.tagline}</p>
+              <h1 data-testid={`category-title-${categoryKey}`} className="text-4xl md:text-5xl font-bold text-white">{config.title}</h1>
+              <p data-testid={`category-tagline-${categoryKey}`} className={`text-lg ${config.accentColor} font-medium`}>{config.tagline}</p>
             </div>
           </div>
           <p className="text-gray-300 max-w-2xl text-lg">{config.description}</p>
