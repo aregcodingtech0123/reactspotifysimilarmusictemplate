@@ -32,11 +32,18 @@ const NavbarLogged = () => {
   return (
     <nav className="bg-gray-800 shadow-md px-2 sm:px-4 py-3 sticky top-0 z-10">
       <div className="container mx-auto flex flex-wrap justify-between items-center">
-        <div className="text-xl font-bold text-white flex-shrink-0">Music App</div>
+        <Link 
+          to="/home" 
+          className="text-xl font-bold text-white flex-shrink-0 hover:text-purple-400 transition-colors"
+          data-testid="navbar-logo"
+        >
+          Music App
+        </Link>
 
         <button
           className="md:hidden ml-auto mr-2 flex items-center text-white"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
+          data-testid="mobile-menu-toggle"
         >
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isMenuOpen ? 'M6 18L18 6M6 6l12 12' : 'M4 6h16M4 12h16M4 18h16'} />
@@ -52,15 +59,34 @@ const NavbarLogged = () => {
             <SearchBar />
           </div>
 
-          <Link to="/about" className="text-white hover:text-indigo-600 transition py-2 md:py-0">About</Link>
-          <Link to="/trendingsongsall" className="text-white hover:text-indigo-600 transition py-2 md:py-0">Trending</Link>
-          <Link to="/likedsongs" className="text-white hover:text-indigo-600 transition py-2 md:py-0">Favourites</Link>
+          <Link 
+            to="/about" 
+            className="text-white hover:text-indigo-600 transition py-2 md:py-0"
+            data-testid="navbar-about-link"
+          >
+            About
+          </Link>
+          <Link 
+            to="/trendingsongsall" 
+            className="text-white hover:text-indigo-600 transition py-2 md:py-0"
+            data-testid="navbar-trending-link"
+          >
+            Trending
+          </Link>
+          <Link 
+            to="/likedsongs" 
+            className="text-white hover:text-indigo-600 transition py-2 md:py-0"
+            data-testid="navbar-favourites-link"
+          >
+            Favourites
+          </Link>
 
           <div className="relative" ref={dropdownRef}>
             <button
               className="flex items-center text-white hover:text-indigo-600 transition py-2 md:py-0"
               onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
               onMouseEnter={() => setIsProfileDropdownOpen(true)}
+              data-testid="navbar-profile-btn"
             >
               <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                 <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd"></path>
@@ -69,9 +95,28 @@ const NavbarLogged = () => {
 
             {isProfileDropdownOpen && (
               <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20" onMouseLeave={() => setIsProfileDropdownOpen(false)}>
-                <Link to="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">View Profile</Link>
-                <Link to="/profilesettings" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile Settings</Link>
-                <button type="button" onClick={handleLogout} className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Log Out</button>
+                <Link 
+                  to="/profile" 
+                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  data-testid="dropdown-profile-link"
+                >
+                  View Profile
+                </Link>
+                <Link 
+                  to="/profilesettings" 
+                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  data-testid="dropdown-settings-link"
+                >
+                  Profile Settings
+                </Link>
+                <button 
+                  type="button" 
+                  onClick={handleLogout} 
+                  className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  data-testid="dropdown-logout-btn"
+                >
+                  Log Out
+                </button>
               </div>
             )}
           </div>
