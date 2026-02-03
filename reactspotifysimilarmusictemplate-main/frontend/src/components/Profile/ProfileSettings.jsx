@@ -1,5 +1,5 @@
 import React from 'react';
-import ProfileSidebar from './ProfileSidebar';
+import ProfileSidebar from './ProfileSideBar';
 import ProfileEditForm from './ProfileEditForm';
 
 const ProfileSettings = () => {
