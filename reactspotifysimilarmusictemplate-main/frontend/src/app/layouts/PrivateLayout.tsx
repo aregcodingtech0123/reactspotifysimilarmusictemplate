@@ -7,6 +7,8 @@ import { SidebarProvider } from '../../context/SidebarContext';
 
 /**
  * Layout for authenticated routes: Navbar, Sidebar, content, Footer.
+ * Redirects to "/" (public home) if not authenticated.
+ * "/" is now handled by PublicHomeLayout for guests
  */
 export function PrivateLayout() {
   const { isAuthenticated, isLoading } = useAuth();
