@@ -1,0 +1,74 @@
+// Prisma schema for Spotify-like backend (shared with Express)
+// PostgreSQL
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String     @id @default(cuid())
+  username  String     @unique
+  email     String     @unique
+  password  String
+  createdAt DateTime   @default(now())
+
+  playlists     Playlist[]
+  contactMessages ContactMessage[]
+}
+
+model ContactMessage {
+  id        String   @id @default(uuid())
+  message   String   @db.Text
+  userId    String?  @map("user_id")
+  email     String?  @db.VarChar(255)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@map("contact_messages")
+}
+
+model Playlist {
+  id        String   @id @default(cuid())
+  name      String
+  userId    String
+  createdAt DateTime @default(now())
+
+  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tracks Track[]
+}
+
+model Track {
+  id         String   @id @default(cuid())
+  title      String
+  artist     String
+  playlistId String
+
+  playlist Playlist @relation(fields: [playlistId], references: [id], onDelete: Cascade)
+}
+
+model Song {
+  id         String   @id @default(uuid())
+  title      String   @db.VarChar(255)
+  artist     String   @db.VarChar(255)
+  album      String   @db.VarChar(255)
+  coverUrl   String   @map("cover_url") @db.VarChar(500)
+  duration   Int      // seconds
+  previewUrl String?  @map("preview_url") @db.VarChar(500)
+  genre      String   @db.VarChar(100)
+  popularity Int      @default(50) // 0-100, internal score
+  deezerId   BigInt   @unique @map("deezer_id")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  @@index([genre])
+  @@index([popularity])
+  @@index([createdAt])
+  @@index([artist])
+  @@map("songs")
+}

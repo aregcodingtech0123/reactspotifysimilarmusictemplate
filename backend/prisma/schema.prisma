@@ -1,0 +1,97 @@
+// Prisma schema for Spotify-like backend
+// PostgreSQL + layered architecture
+// Mapped to existing tables: users, playlists, tracks
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String     @id @default(uuid()) @db.Uuid
+  username  String     @unique @db.VarChar(50)
+  email     String     @unique @db.VarChar(100)
+  password  String?
+  googleId  String?    @unique @map("google_id")
+  createdAt DateTime? @default(now()) @map("created_at") @db.Timestamp(6)
+
+  playlists       Playlist[]
+  contactMessages  ContactMessage[]
+  listens         Listen[]
+
+  @@map("users")
+}
+
+model ContactMessage {
+  id        String    @id @default(uuid()) @db.Uuid
+  message   String    @db.Text
+  userId    String?   @map("user_id") @db.Uuid
+  email     String?   @db.VarChar(255)
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamp(6)
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@map("contact_messages")
+}
+
+model Playlist {
+  id        String    @id @default(uuid()) @db.Uuid
+  name      String    @db.VarChar(100)
+  userId    String    @map("user_id") @db.Uuid
+  createdAt DateTime? @default(now()) @map("created_at") @db.Timestamp(6)
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tracks Track[]
+
+  @@map("playlists")
+}
+
+model Track {
+  id         String   @id @default(uuid()) @db.Uuid
+  title      String   @db.VarChar(100)
+  artist     String   @db.VarChar(100)
+  playlistId String   @map("playlist_id") @db.Uuid
+
+  playlist Playlist @relation(fields: [playlistId], references: [id], onDelete: Cascade)
+
+  @@map("tracks")
+}
+
+model Song {
+  id          String    @id @default(uuid()) @db.Uuid
+  deezerId    String    @unique @map("deezer_id") @db.VarChar(50)
+  title       String    @db.VarChar(255)
+  artist      String    @db.VarChar(255)
+  album       String?   @db.VarChar(255)
+  genre       String    @db.VarChar(50)
+  coverUrl    String    @map("cover_url") @db.Text
+  previewUrl  String?   @map("preview_url") @db.Text
+  duration    Int       @default(0)
+  playCount   Int       @default(0) @map("play_count")
+  lastPlayedAt DateTime? @map("last_played_at") @db.Timestamp(6)
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamp(6)
+  updatedAt   DateTime  @updatedAt @map("updated_at") @db.Timestamp(6)
+
+  listens Listen[]
+
+  @@map("songs")
+}
+
+model Listen {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String?  @map("user_id") @db.Uuid
+  songId    String   @map("song_id") @db.Uuid
+  playedAt  DateTime @default(now()) @map("played_at") @db.Timestamp(6)
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+  song Song  @relation(fields: [songId], references: [id], onDelete: Cascade)
+
+  @@index([userId, playedAt])
+  @@index([songId])
+  @@map("listens")
+}

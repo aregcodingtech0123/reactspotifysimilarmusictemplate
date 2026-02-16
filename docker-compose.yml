@@ -1,0 +1,30 @@
+services:
+  # 1. Servis: Sizin Backend Uygulamanız
+  api:
+    build: ./backend  # Dockerfile'ın olduğu klasör
+    ports:
+      - "4000:4000"   # Bilgisayarınızın 4000 portunu konteynerin 4000 portuna bağlar
+    environment:
+      - PORT=4000
+      # DİKKAT: Docker içinde veritabanı adresi 'localhost' DEĞİL, servis adı olan 'db' olur.
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/music_app_db
+      - JWT_SECRET=dev-secret-change-in-production
+      - NODE_ENV=development
+    depends_on:
+      - db  # Veritabanı başlamadan uygulama başlamasın
+
+  # 2. Servis: PostgreSQL Veritabanı
+  db:
+    image: postgres:15-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: music_app_db
+    ports:
+      - "5432:5432" # Bilgisayarınızdan veritabanına erişmek isterseniz diye
+    volumes:
+      - postgres_data:/var/lib/postgresql/data # Veriler kaybolmasın diye volume tanımlıyoruz
+
+volumes:
+  postgres_data:
